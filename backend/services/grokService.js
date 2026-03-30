@@ -1,9 +1,9 @@
 const axios = require("axios");
 
-async function openaiService(prompt, modelName) {
+async function grokService(prompt, modelName) {
     try {
         const response = await axios.post(
-            "https://api.openai.com/v1/chat/completions",
+            "https://api.x.ai/v1/chat/completions",
             {
                 model: modelName,
                 messages: [{ role: "user", content: prompt }],
@@ -11,7 +11,8 @@ async function openaiService(prompt, modelName) {
             },
             {
                 headers: {
-                    "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`
+                    "Authorization": `Bearer ${process.env.GROK_API_KEY}`,
+                    "Content-Type": "application/json"
                 }
             }
         );
@@ -19,9 +20,9 @@ async function openaiService(prompt, modelName) {
         const result = response.data.choices[0].message.content;
         return result;
     } catch (error) {
-        console.error("OpenAI Service Error:", error.response ? error.response.data : error.message);
+        console.error("Grok Service Error:", error.response ? error.response.data : error.message);
         throw error;
     }
 }
 
-module.exports = openaiService;
+module.exports = grokService;
